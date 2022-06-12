@@ -21,15 +21,24 @@ class MyRobot1(RCJSoccerRobot):
                 heading = self.get_compass_heading()
                 robot_pos = self.get_gps_coordinates()
                 sonar_values = self.get_sonar_values()
-                theta_d = math.pi/2
-                if (heading - theta_d < 1e-2):
-                    self.left_motor.setVelocity(8)
-                    self.right_motor.setVelocity(0)
+                kp = 1
+                theta_d = math.pi / 3
+                if theta_d > 0:
+                    if heading - theta_d < 1e-2:
+                        self.right_motor.setVelocity(kp * (heading - theta_d))
+                        self.left_motor.setVelocity(0)
+                    else:
+                        self.left_motor.setVelocity(0)
+                        self.right_motor.setVelocity(0)
                 else:
-                    self.left_motor.setVelocity(0)
-                    self.right_motor.setVelocity(0)
+                    if heading - theta_d < 1e-2:
+                        self.right_motor.setVelocity(kp * (eading - theta_d))
+                        self.left_motor.setVelocity(0)
+                    else:
+                        self.left_motor.setVelocity(0)
+                        self.right_motor.setVelocity(0)
 
-                '''# Compute the speed for motors
+                """# Compute the speed for motors
                 direction = utils.get_direction(ball_data["direction"])
                 if direction == 0:
                     left_speed = 7
@@ -40,4 +49,4 @@ class MyRobot1(RCJSoccerRobot):
 
                 self.left_motor.setVelocity(left_speed)
                 self.right_motor.setVelocity(right_speed)
-                self.send_data_to_team(self.player_id)'''
+                self.send_data_to_team(self.player_id)"""
