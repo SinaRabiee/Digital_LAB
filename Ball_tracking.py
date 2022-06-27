@@ -23,34 +23,28 @@ class MyRobot1(RCJSoccerRobot):
                 robot_pos = self.get_gps_coordinates()
                 sonar_values = self.get_sonar_values()
 
-                yd = ball_data["direction"][1]
-                xd = ball_data["direction"][0]
-                ex = xd - robot_pos[1]
-                ey = yd - robot_pos[0]
-                kpx = 2
-                kpy = 10
+                distance = ball_data["strength"]
+                theta = ball_data["direction"][1]
+                FrontBack = ball_data["direction"][0]
+                kmax = 150
+                kmin = 15
+                kt = 10
 
-                if (abs(ex) > 1e-2):
-                    self.left_motor.setVelocity(kpx*ex)
-                    self.right_motor.setVelocity(kpx*ex)
+                print(ball_data)
+                if abs(theta) > 0.05:
+                     self.right_motor.setVelocity(-kt*theta)
+                     self.left_motor.setVelocity(kt*theta) 
+                elif FrontBack < -0.01:
+                    self.right_motor.setVelocity(-9)
+                    self.left_motor.setVelocity(9) 
+                elif distance > 15:
+                     self.right_motor.setVelocity(kmax/distance)
+                     self.left_motor.setVelocity(kmax/distance) 
                 else:
-                    self.left_motor.setVelocity(5)
-                    if (yd > 0):
-                        if (heading - math.pi/2 > 1e-2):
-                            self.left_motor.setVelocity(kpy*ey)
-                            self.right_motor.setVelocity(kpy*ey)
-                        else:
-                            self.left_motor.setVelocity(7)
-                            self.right_motor.setVelocity(0)
-
-                    else:
-                        if (heading + math.pi/2 > 1e-2):
-                            self.left_motor.setVelocity(kpy*ey)
-                            self.right_motor.setVelocity(kpy*ey)
-                        else:
-                            self.left_motor.setVelocity(0)
-                            self.right_motor.setVelocity(7)
-
+                     self.right_motor.setVelocity(kmin/distance)
+                     self.left_motor.setVelocity(kmin/distance) 
+                 
+             
                 '''# Compute the speed for motors
                 direction = utils.get_direction(ball_data["direction"])
 
