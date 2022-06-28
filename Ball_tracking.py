@@ -30,8 +30,8 @@ class MyRobot1(RCJSoccerRobot):
                 kmin = 15
                 kt = 10
 
-                print(ball_data)
-                if abs(theta) > 0.05:
+                print(kmax/distance)
+                if abs(theta) > 0.1:
                      self.right_motor.setVelocity(-kt*theta)
                      self.left_motor.setVelocity(kt*theta) 
                 elif FrontBack < -0.01:
@@ -41,8 +41,8 @@ class MyRobot1(RCJSoccerRobot):
                      self.right_motor.setVelocity(kmax/distance)
                      self.left_motor.setVelocity(kmax/distance) 
                 else:
-                     self.right_motor.setVelocity(kmin/distance)
-                     self.left_motor.setVelocity(kmin/distance) 
+                     self.right_motor.setVelocity(10)
+                     self.left_motor.setVelocity(10) 
                  
              
                 '''# Compute the speed for motors
