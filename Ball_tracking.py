@@ -1,7 +1,16 @@
 import math
-import time
 import utils
+import time
 from rcj_soccer_robot import RCJSoccerRobot, TIME_STEP
+
+
+def append_new_line(file_name, text_to_append):
+    with open(file_name, "a+") as file_object:
+        file_object.seek(0)
+        data = file_object.read(100)
+        if len(data) > 0:
+            file_object.write("\n")
+        file_object.write(text_to_append)
 
 
 class PID:
@@ -86,6 +95,11 @@ class MyRobot1(RCJSoccerRobot):
                 control_th.update(theta)
                 control_dis.update(1 / distance)
                 control_fb.update(FrontBack)
+
+                append_new_line("balltheta(ball).txt", str(theta))
+                append_new_line("ballfb(ball).txt", str(FrontBack))
+                append_new_line("balldis(ball).txt", str(distance))
+
                 if FrontBack < -0.6:
                     self.left_motor.setVelocity(control_fb.output)
                     self.right_motor.setVelocity(-control_fb.output)

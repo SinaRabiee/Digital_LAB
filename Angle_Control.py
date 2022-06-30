@@ -4,6 +4,15 @@ import utils
 from rcj_soccer_robot import RCJSoccerRobot, TIME_STEP
 
 
+def append_new_line(file_name, text_to_append):
+    with open(file_name, "a+") as file_object:
+        file_object.seek(0)
+        data = file_object.read(100)
+        if len(data) > 0:
+            file_object.write("\n")
+        file_object.write(text_to_append)
+
+
 class PID:
     def __init__(self, kp=2, ki=0.0, kd=0.0, SetPoint=0.0, current_time=None):
         self.Kp = kp
@@ -80,5 +89,10 @@ class MyRobot1(RCJSoccerRobot):
                 w = control.output
                 vr = (2 * v - 0.08 * w) / (2 * 0.02)
                 vl = (2 * v + 0.08 * w) / (2 * 0.02)
+
+                append_new_line("heading(Angle).txt", str(heading))
+                append_new_line("vr(Angle).txt", str(vr))
+                append_new_line("vl(Angle).txt", str(vl))
+
                 self.left_motor.setVelocity(vl)
                 self.right_motor.setVelocity(vr)

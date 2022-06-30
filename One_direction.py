@@ -4,6 +4,15 @@ import utils
 from rcj_soccer_robot import RCJSoccerRobot, TIME_STEP
 
 
+def append_new_line(file_name, text_to_append):
+    with open(file_name, "a+") as file_object:
+        file_object.seek(0)
+        data = file_object.read(100)
+        if len(data) > 0:
+            file_object.write("\n")
+        file_object.write(text_to_append)
+
+
 class PID:
     def __init__(self, kp=2, ki=0.0, kd=0.0, SetPoint=0.0, current_time=None):
         self.Kp = kp
@@ -58,7 +67,7 @@ class PID:
 
 class MyRobot1(RCJSoccerRobot):
     def run(self):
-        control = PID(15, 0.1, 0.1, -0.4)
+        control = PID(15, 0.1, 0.1, 0.4)
         while self.robot.step(TIME_STEP) != -1:
             if self.is_new_data():
                 data = self.get_new_data()
@@ -68,8 +77,8 @@ class MyRobot1(RCJSoccerRobot):
                 if self.is_new_ball_data():
                     ball_data = self.get_new_ball_data()
                 else:
-                    self.left_motor.setVelocity(0)
-                    self.right_motor.setVelocity(0)
+                    # self.left_motor.setVelocity(0)
+                    # self.right_motor.setVelocity(0)
                     continue
 
                 heading = self.get_compass_heading()
@@ -77,6 +86,8 @@ class MyRobot1(RCJSoccerRobot):
 
                 control.update(robot_pos[1])
                 print(robot_pos[1])
+                append_new_line("x(1D).txt", str(robot_pos[1]))
+                append_new_line("contoller(1D).txt", str(control.output))
 
                 self.left_motor.setVelocity(-control.output)
                 self.right_motor.setVelocity(-control.output)

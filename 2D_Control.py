@@ -4,6 +4,15 @@ import time
 from rcj_soccer_robot import RCJSoccerRobot, TIME_STEP
 
 
+def append_new_line(file_name, text_to_append):
+    with open(file_name, "a+") as file_object:
+        file_object.seek(0)
+        data = file_object.read(100)
+        if len(data) > 0:
+            file_object.write("\n")
+        file_object.write(text_to_append)
+
+
 class PID:
     def __init__(self, kp=2, ki=0.0, kd=0.0, SetPoint=0.0, current_time=None):
         self.Kp = kp
@@ -79,7 +88,7 @@ class MyRobot1(RCJSoccerRobot):
                 robot_pos = self.get_gps_coordinates()
                 direction = utils.get_direction(ball_data["direction"])
 
-                xd = 0.3
+                xd = -0.3
                 yd = 0.3
                 x = robot_pos[1]
                 y = robot_pos[0]
@@ -91,5 +100,11 @@ class MyRobot1(RCJSoccerRobot):
                 w = control_ang.output
                 vr = (2 * v + L * w) / (2 * R)
                 vl = (2 * v - L * w) / (2 * R)
+
+                append_new_line("x(2D).txt", str(x))
+                append_new_line("y(2D).txt", str(y))
+                append_new_line("vr(2D).txt", str(vr))
+                append_new_line("vl(2D).txt", str(vl))
+
                 self.left_motor.setVelocity(-vl)
                 self.right_motor.setVelocity(-vr)
