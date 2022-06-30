@@ -58,10 +58,13 @@ class PID:
 
 class MyRobot1(RCJSoccerRobot):
     def run(self):
-        control = PID(2, 0.1, 0.1, math.pi / 3)
+        control_th = PID(10, 0.0, 1)
+        control_dis = PID(1, 0, 0)
+        control_fb = PID()
         while self.robot.step(TIME_STEP) != -1:
             if self.is_new_data():
                 data = self.get_new_data()
+
                 while self.is_new_team_data():
                     team_data = self.get_new_team_data()
 
@@ -74,11 +77,40 @@ class MyRobot1(RCJSoccerRobot):
 
                 heading = self.get_compass_heading()
                 robot_pos = self.get_gps_coordinates()
+                direction = utils.get_direction(ball_data["direction"])
+                sonar_values = self.get_sonar_values()
+                print(sonar_values)
 
-                control.update(heading)
-                v = 0
-                w = control.output
-                vr = (2 * v - 0.08 * w) / (2 * 0.02)
-                vl = (2 * v + 0.08 * w) / (2 * 0.02)
-                self.left_motor.setVelocity(vl)
-                self.right_motor.setVelocity(vr)
+                distance = ball_data["strength"]
+                theta = ball_data["direction"][1]
+                FrontBack = ball_data["direction"][0]
+
+                control_th.update(theta)
+                control_dis.update(1 / distance)
+                control_fb.update(FrontBack)
+                if sum(val < 35 for key, val in sonar_values.items()) == 0:
+                    if FrontBack < -0.6:
+                        self.left_motor.setVelocity(control_fb.output)
+                        self.right_motor.setVelocity(-control_fb.output)
+                    elif distance < 25:
+                        v = -control_dis.output
+                        w = control_th.output
+                        vl = (2 * v - 0.08 * w) / (2 * 0.02)
+                        vr = (2 * v + 0.08 * w) / (2 * 0.02)
+                        self.left_motor.setVelocity(vl)
+                        self.right_motor.setVelocity(vr)
+                    elif distance > 25:
+                        self.left_motor.setVelocity(10)
+                        self.right_motor.setVelocity(10)
+                elif sonar_values["front"] < 35:
+                    self.left_motor.setVelocity(-10)
+                    self.right_motor.setVelocity(-10)
+                elif sonar_values["back"] < 35:
+                    self.left_motor.setVelocity(10)
+                    self.right_motor.setVelocity(10)
+                elif sonar_values["left"] < 35:
+                    self.left_motor.setVelocity(0)
+                    self.right_motor.setVelocity(10)
+                elif sonar_values["right"] < 35:
+                    self.left_motor.setVelocity(10)
+                    self.right_motor.setVelocity(0)

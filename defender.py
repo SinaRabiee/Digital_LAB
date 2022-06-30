@@ -1,6 +1,6 @@
 import math
-import time
 import utils
+import time
 from rcj_soccer_robot import RCJSoccerRobot, TIME_STEP
 
 
@@ -56,43 +56,69 @@ class PID:
         self.sample_time = sample_time
 
 
-class MyRobot1(RCJSoccerRobot):
+class MyRobot2(RCJSoccerRobot):
     def run(self):
-        control_th = PID(2, 0.0, 0.0)
-        control_dis = PID(1, 0, 0)
-        control_fb = PID()
+        control_ballang = PID(2, 0, 0)
+        control_balldis = PID(1, 0, 0)
+        control_dis = PID(0.3, 0, 0)
+        control_ang = PID(0.5, 0, 0)
+        L = 0.08
+        R = 0.02
         while self.robot.step(TIME_STEP) != -1:
             if self.is_new_data():
                 data = self.get_new_data()
-
                 while self.is_new_team_data():
                     team_data = self.get_new_team_data()
 
                 if self.is_new_ball_data():
                     ball_data = self.get_new_ball_data()
                 else:
-                    self.left_motor.setVelocity(0)
-                    self.right_motor.setVelocity(0)
+                    # self.left_motor.setVelocity(0)
+                    # self.right_motor.setVelocity(0)
                     continue
 
                 heading = self.get_compass_heading()
                 robot_pos = self.get_gps_coordinates()
                 direction = utils.get_direction(ball_data["direction"])
 
-                distance = ball_data["strength"]
-                theta = ball_data["direction"][1]
+                # blue goal
+                xd = 0.7
+                yd = 0.0
+                x = robot_pos[1]
+                y = robot_pos[0]
+                balldis = ball_data["strength"]
+                ballang = ball_data["direction"][1]
                 FrontBack = ball_data["direction"][0]
 
-                control_th.update(theta)
-                control_dis.update(1 / distance)
-                control_fb.update(FrontBack)
-                if FrontBack < -0.6:
-                    self.left_motor.setVelocity(control_fb.output)
-                    self.right_motor.setVelocity(-control_fb.output)
+                if y > 0:
+                    ang = -math.pi + heading - math.atan2(yd - y, -xd + x)
                 else:
+                    ang = math.pi + heading - math.atan2(yd - y, -xd + x)
+                dis = math.sqrt((yd - y) ** 2 + (xd - x) ** 2)
+                control_dis.update(dis)
+                control_ang.update(ang)
+                control_ballang.update(ballang)
+                control_balldis.update(1 / balldis)
+                if abs(ang) > 0.1 and dis > 0.1:
                     v = -control_dis.output
-                    w = control_th.output
-                    vl = (2 * v - 0.08 * w) / (2 * 0.02)
-                    vr = (2 * v + 0.08 * w) / (2 * 0.02)
-                    self.left_motor.setVelocity(vl)
-                    self.right_motor.setVelocity(vr)
+                    w = control_ang.output
+                    vl = (2 * v - L * w) / (2 * R)
+                    vr = (2 * v + L * w) / (2 * R)
+                    self.left_motor.setVelocity(-vl)
+                    self.right_motor.setVelocity(-vr)
+
+                else:
+                    if balldis > 60:
+                        if FrontBack < -0.6:
+                            self.left_motor.setVelocity(10)
+                            self.right_motor.setVelocity(-10)
+                        else:
+                            vb = -control_balldis.output
+                            wb = control_ballang.output
+                            vlb = (2 * vb - L * wb) / (2 * R)
+                            vrb = (2 * vb + L * wb) / (2 * R)
+                            self.left_motor.setVelocity(vlb)
+                            self.right_motor.setVelocity(vrb)
+                    else:
+                        self.left_motor.setVelocity(-1)
+                        self.right_motor.setVelocity(1)
