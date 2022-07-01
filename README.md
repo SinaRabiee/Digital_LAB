@@ -2,7 +2,6 @@
 
 ## Control in one direction
 
-<br>
 ### Codes functionallity
 In the code designed for controlling the robot in one direction (X), a PID controller class is used, So all 4 types of controllers (P, PI, PD, PID) are attainable by changing the gains in objects created from this class.
 This class uses a member variable called sample-time, as soon as delta-time reaches the sample-time, it calculates the PTerm, the DTerm (deviding the error by delta-time) and the ITerm (using error summation) and defines the output as the sum of all this terms.
@@ -18,29 +17,43 @@ Deadzones causes the process error to become larger (the motor does not respond 
 
 ### Anti Wind-Up gaurd
 Integerator Wind-Up can cause the PID output to exceed the upper (or lower) saturation bound for motor input. A member variable called windup_guard is introduced to prevent this from happening.
-<br>
 
-<br>
 <p align="center">
 <img src="resources/1D.jpg" alt="minor"
-title="1D Control" width="600" align="middle" />
+title="1D Control" width="550" align="middle" />
 </p>
 <br>
 In the above picture, you can see the controllers output and X-position of the robot for the introduced object of the PID class.
 
+## Control in one direction
 
+### Codes functionallity
+In the code designed for controlling the robot in one direction (X), a PID controller class is used, So all 4 types of controllers (P, PI, PD, PID) are attainable by changing the gains in objects created from this class.
+This class uses a member variable called sample-time, as soon as delta-time reaches the sample-time, it calculates the PTerm, the DTerm (deviding the error by delta-time) and the ITerm (using error summation) and defines the output as the sum of all this terms.
 
+### P, PI, PD, PID
+A P controller output is proportional to the error its input by a kp gain, so there is no Overshoot. A PI controller uses an integrator to reduce the steady state error. A PD contoller uses a derivative block to decrease the setteling time of the process. A PID contoller is mixture of all the controllers explained above and can be used to achieve critically damped response with minimum final error. 
 
-<br>
+### Discretization
+For disceteization of every section of the PID contoller we can use the ZOH method, which consists of sampler with specific frequency.
+
+### Deadzone
+Deadzones causes the process error to become larger (the motor does not respond until the input gets to a specific value). for example if the deadzone bound for our DC motor is 0.5 and we use a P contorller with kp=10, the errors lower than 0.05 correspond to a value lowers than 0.5 for motor input.
+
+### Anti Wind-Up gaurd
+Integerator Wind-Up can cause the PID output to exceed the upper (or lower) saturation bound for motor input. A member variable called windup_guard is introduced to prevent this from happening.
+
 <p align="center">
 <img src="resources/Angle.jpg" alt="minor"
 title="Angle Control" width="300" align="middle" />
 </p>
 
 <br>
-In the above picture, you can see the recipe for the most famous espresso-based coffees. Take a little time and look at this picture, you will need to make a couple of these coffees in this homework.
+In the above picture, you can see the controllers output and X-position of the robot for the introduced object of the PID class.
 
-</br>
+
+
+
 
 # Ingredient Class
 Define an **abstract** class named `Ingredient` and add the following functions to the class.
