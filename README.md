@@ -1,6 +1,6 @@
 # Digital LAB HW
 
-## Control in one direction
+## One direction control
 
 ### Codes functionallity
 In the code designed for controlling the robot in one direction (X), a PID controller class is used, So all 4 types of controllers (P, PI, PD, PID) are attainable by changing the gains in objects created from this class.
