@@ -25,14 +25,10 @@ title="1D Control" width="550" align="middle" />
 <br>
 In the above picture, you can see the controllers output and X-position of the robot for the introduced object of the PID class.
 
-## Control in one direction
+## Angle control
 
 ### Codes functionallity
-In the code designed for controlling the robot in one direction (X), a PID controller class is used, So all 4 types of controllers (P, PI, PD, PID) are attainable by changing the gains in objects created from this class.
-This class uses a member variable called sample-time, as soon as delta-time reaches the sample-time, it calculates the PTerm, the DTerm (deviding the error by delta-time) and the ITerm (using error summation) and defines the output as the sum of all this terms.
-
-<br>
-The remaining parts are the same as previous sections.
+In the code designed for controlling the Angle of the robot, the same PID class is used. the desired output for heading is constantly being checked with the feedback (heading) to reach the desired output.
 
 <p align="center">
 <img src="resources/Angle.jpg" alt="minor"
@@ -40,7 +36,35 @@ title="Angle Control" width="550" align="middle" />
 </p>
 
 <br>
-In the above picture, you can see the controllers output and X-position of the robot for the introduced object of the PID class.
+In the above picture, you can see the motors input and compass readings of the robot, which is being controlled with an object of the PID class.
+The remaining parts are the same as previous sections.
+
+## 2D control
+
+### Codes functionallity
+In this code, position of the robot is controlled with two objects from the same PID class, one for the distance between the robot and desired position and one for the angle difference. Robot motors use the formula derived in the class the desired (vr=(2v+Lw)/2R and vl=(2v-Lw)/2R) to move the robot to the desired X abd Y.
+
+<p align="center">
+<img src="resources/2D.jpg" alt="minor"
+title="2D Control" width="550" align="middle" />
+</p>
+
+<br>
+In the above picture, you can see the motors input and the pposition of the robot.
+The remaining parts are the same as previous sections.
+## Ball tracking
+
+### Codes functionallity
+In this code, position of the robot is controlled with two objects from the same PID class, one for the distance between the robot and desired position and one for the angle difference. Robot motors use the formula derived in the class the desired (vr=(2v+Lw)/2R and vl=(2v-Lw)/2R) to move the robot to the desired X abd Y.
+
+<p align="center">
+<img src="resources/2D.jpg" alt="minor"
+title="2D Control" width="550" align="middle" />
+</p>
+
+<br>
+In the above picture, you can see the motors input and the pposition of the robot.
+The remaining parts are the same as previous sections.
 
 
 
