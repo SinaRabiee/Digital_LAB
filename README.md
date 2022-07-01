@@ -55,7 +55,7 @@ The remaining parts are the same as previous sections.
 ## Ball tracking
 
 ### Codes functionallity
-In this code, position of the robot is controlled with two objects from the same PID class, one for the distance between the robot and desired position and one for the angle difference. Robot motors use the formula derived in the class the desired (vr=(2v+Lw)/2R and vl=(2v-Lw)/2R) to move the robot to the desired X abd Y.
+In this code, position of the robot is controlled with two objects from the same PID class, one for the distance between the robot and desired position and one for the angle difference. Robot motors use the formula derived in the class (`vr=(2v+Lw)/2R` and `vl=(2v-Lw)/2R`) to move the robot to the desired X abd Y.
 
 <p align="center">
 <img src="resources/2D.jpg" alt="minor"
@@ -70,31 +70,9 @@ The remaining parts are the same as previous sections.
 
 
 
-# Ingredient Class
-Define an **abstract** class named `Ingredient` and add the following functions to the class.
-
-```cpp
-class Ingredient
-{
-public:
-    double get_price_unit();
-    size_t get_units();
-    std::string get_name();
-
-    double price();
-    
-
-protected:
-    Ingredient(double price_unit, size_t units);
-
-    double price_unit;
-    size_t units;
-    std::string name;
-};
-```
 
 
-The functions of this class are straight forward. As for the member variables: `price_unit` is an indication of what is the price of this ingredient per unit. `units` will show how many of this ingredient we will be needing. The `price()` function will calculate the final price of the ingredient. `name` is going to be the name of the ingredients, which can be Espresso, Milk, Chocolate, or ...
+
 
 Since the name of the ingredient is not yet known, make `get_name()` a pure virtual function and so the class an abstract class.
 
