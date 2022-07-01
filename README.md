@@ -19,7 +19,7 @@ In the above picture, you can see the recipe for the most famous espresso-based 
 
 
 
-
+<br>
 <p align="center">
 <img src="resources/Angle.jpg" alt="minor"
 title="Angle Control" width="300" align="middle" />
