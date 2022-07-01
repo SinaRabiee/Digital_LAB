@@ -2,6 +2,7 @@
 
 ## Control in one direction
 
+<br>
 ### Codes functionallity
 In the code designed for controlling the robot in one direction (X), a PID controller class is used, So all 4 types of controllers (P, PI, PD, PID) are attainable by changing the gains in objects created from this class.
 This class uses a member variable called sample-time, as soon as delta-time reaches the sample-time, it calculates the PTerm, the DTerm (deviding the error by delta-time) and the ITerm (using error summation) and defines the output as the sum of all this terms.
@@ -17,7 +18,7 @@ Deadzones causes the process error to become larger (the motor does not respond 
 
 ### Anti Wind-Up gaurd
 Integerator Wind-Up can cause the PID output to exceed the upper (or lower) saturation bound for motor input. A member variable called windup_guard is introduced to prevent this from happening.
-
+<br>
 
 <br>
 <p align="center">
