@@ -1,12 +1,9 @@
 # Digital LAB HW
-<p  align="center">
 
-## Outline
+## Control in one direction
 
-عبدول سینا ربیعی
-	
-We will implement a base class called `Ingredients` and derive all our necessary ingredients from it.
-We also implement another class called `EspressoBased` and derive our espresso-based coffees from it.
+<br>
+In the code designed for controlling the robot in one direction (X), a PID controller class is used, So all 4 types of controllers (P, PI, PD, PID) are attainable by changing the gains in objects created from this class. A P controller output is proportional to the error its input by a kp gain, so there is no Overshoot. A PI controller uses an integrator to reduce the steady state error. A PD contoller uses a derivative block to decrease the setteling time of the process. A PID contoller is mixture of all the controllers explained above and can be used to achieve critically damped response with minimum final error. 
 
 <br>
 <p align="center">
